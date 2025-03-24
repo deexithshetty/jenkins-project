@@ -6,6 +6,13 @@ tools {
 maven 'maven3.9.5'
 }
 
+options{
+//It will add timestamps to the output
+timestamps()
+//Discard Old Build.. Keep only last 5 Build with artifcats
+buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
+}
+
 stages{
 
 stage('Checkout stage'){
