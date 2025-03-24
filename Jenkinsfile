@@ -6,6 +6,11 @@ tools {
 maven 'maven3.9.5'
 }
 
+triggers {
+  pollSCM '* * * * *'
+}
+
+
 parameters {
   choice choices: ['dev', 'qa', 'stage', 'preprod ', 'prod'], description: 'env_name', name: 'env_name'
 }
