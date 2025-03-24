@@ -6,19 +6,22 @@ tools {
 maven 'maven3.9.5'
 }
 
-options{
-//It will add timestamps to the output
-timestamps()
-//Discard Old Build.. Keep only last 5 Build with artifcats
-buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
+parameters {
+  choice choices: ['dev', 'qa', 'stage', 'preprod ', 'prod'], description: 'env_name', name: 'env_name'
 }
+
+options {
+timestamps()
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '2', numToKeepStr: '5')
+}
+
 
 stages{
 
 stage('Checkout stage'){
 steps{
 // Pulls code from the 'dev' branch using stored GitHub credentials
-git branch: 'dev', credentialsId: 'githubcreds', url: 'https://github.com/deexithshetty/jenkins-project.git'
+git branch: params.env_name, credentialsId: 'githubcreds', url: 'https://github.com/deexithshetty/jenkins-project.git'
 }
 }
 
