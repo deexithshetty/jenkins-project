@@ -7,7 +7,7 @@ maven 'maven3.9.5'
 }
 
 triggers {
-  pollSCM 'H/2 * * * *'
+  pollSCM '* * * * *'
 }
 
 
