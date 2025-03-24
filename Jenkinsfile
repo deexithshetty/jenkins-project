@@ -6,7 +6,9 @@ tools {
 maven 'maven3.9.5'
 }
 
+
 triggers {
+// adding trigger
   pollSCM '* * * * *'
 }
 
