@@ -21,6 +21,10 @@ timestamps()
   buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '2', numToKeepStr: '5')
 }
 
+environment{
+image_name = "myapp:${params.env_name}"
+}
+
 
 stages{
 
@@ -80,6 +84,15 @@ steps{
 sh 'mvn deploy'
 }
 */
+
+stage('Build docker image'){
+steps{
+sh """
+docker build -t ${image_name} .
+docker images | grep ${image_name}
+"""
+}
+}
 
 
 
