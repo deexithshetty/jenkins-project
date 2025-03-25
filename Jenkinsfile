@@ -20,6 +20,10 @@ timestamps()
   buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '2', numToKeepStr: '5')
 }
 
+environment{
+image_name = "myapp:${params.env_name}"
+}
+
 
 stages{
 
@@ -73,12 +77,41 @@ sh 'mvn install'
 }
 
 /*
-stage('Deploy Stage'){
+stage('Deploy Stage to remote repo'){
 steps{
 // Deploys the WAR file to a remote repository
 sh 'mvn deploy'
 }
 */
+
+
+// checking in multistage pipeline works
+
+        stage('Deploy Stage') {
+            steps {
+                script {
+                    switch (params.env_name) {
+                        case 'dev':
+                            echo "Deploying to DEV environment..."
+                            break
+                        case 'qa':
+                            echo "Deploying to QA environment..."
+                            break
+                        case 'preprod':
+                            echo "Deploying to PREPROD environment..."
+                            break
+                        case 'prod':
+                            timeout(time: 5, unit: 'DAYS') {
+                                input message: 'Deploy to Production?'
+                            }
+                            echo "Deploying to PROD environment..."
+                            break
+                        default:
+                            error "Invalid environment selected!"
+                    }
+                }
+            }
+        }
 
 
 
